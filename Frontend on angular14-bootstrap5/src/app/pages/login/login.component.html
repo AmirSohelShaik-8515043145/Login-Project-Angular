@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg p-5 mt-5 mb-5">
+        <h1>welcome back </h1>
+        <hr />
+        <div class="alert alert-primary" role="alert">
+          login successful <a href="/"> forget password ?</a>
+        </div>
+        <form [formGroup]="loginform">
+          <div class="form-group">
+            <label for="">Email</label>
+            <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
+            <label for="">password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="*********"
+              formControlName="password"
+            />
+          </div>
+          <br />
+          <button class="btn btn-outline-primary btn-block" (click)="login()">login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

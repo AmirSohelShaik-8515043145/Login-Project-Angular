@@ -1,0 +1,117 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg p-5 mt-5 mb-5">
+        <h1 style="margin:auto; padding-bottom: 15px; color:orange" ><u>Welcome to InCred</u></h1>
+        <hr />
+        <div [ngClass]="className" role="alert">
+          {{message}} <a routerLink="/login" class="text-primary" 
+          style="cursor: pointer;">Login here </a>
+        </div>
+        <form [formGroup]="signupForm">
+          
+          <div class="form-group">
+
+            <!-- //USERNAME -->
+            <label style="margin:5px 0px; ">Username</label>
+            <input type="text" class="form-control" placeholder="Username" formControlName="username" minlength="4" />
+
+            <div *ngIf="signupForm.controls['username']?.touched" >
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="signupForm.controls['username']?.errors?.['required']">
+                  Username is required
+                </div>
+
+                <div *ngIf="signupForm.controls['username'].errors?.['minlength']">
+                  Name must be at least 4 characters long
+                </div>
+
+                <div *ngIf="signupForm.controls['username']?.errors?.['pattern']">
+                  Provide a valid username.
+                </div>
+              </span>  
+
+            </div>
+           
+            
+            <!-- //AGE -->
+            <label style="margin:5px 0px; "> Age </label>
+            <input type ="text" class="form-control" placeholder="Age" formControlName="age" />
+
+            <div *ngIf="signupForm.controls['age']?.touched">
+              <span style="color:red; font-size: 12px;">
+
+                <div *ngIf="signupForm.controls['age']?.errors?.['required']">
+                  Age is required
+                </div>
+
+                <div *ngIf="signupForm.controls['age']?.errors?.['pattern']">
+                  Age should be Numerical value only.
+                </div>
+              </span>  
+
+            </div>
+
+            <!-- //EMAIL -->
+            <label style="margin:5px 0px; ">Email</label>
+            <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
+
+            <div *ngIf="signupForm.controls['email']?.touched">
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="signupForm.controls['email']?.errors?.['required']">
+                  Email is required
+                </div>
+    
+                <div *ngIf="signupForm.controls['email']?.errors?.['pattern']">
+                  Please enter a correct email format
+                </div>
+              </span> 
+            </div>
+
+            <!-- //PHONE NO -->
+            <label style="margin:5px 0px; "> Phone Number</label>
+            <input type="text" class="form-control" placeholder="Phone No" formControlName="phone" />
+
+            <div *ngIf="signupForm.controls['phone']?.touched">
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="signupForm.controls['phone']?.errors?.['required']">
+                  Phone Number is required
+                </div>
+  
+                <div *ngIf="signupForm.controls['phone']?.errors?.['pattern']">
+                  Please enter a valid phone no
+                </div>
+
+              </span>
+            </div>
+          
+            <!-- //PASSWORD -->
+            <label style="margin:5px 0px; ">password</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="*********"
+              formControlName="password"
+            />
+
+            <div *ngIf="signupForm.controls['password']?.touched">
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="signupForm.controls['password']?.errors?.['required']">
+                  Password is required
+                </div>
+
+                <div *ngIf="signupForm.controls['password']?.errors?.['pattern']">
+                  Password cannot be a empty value
+                </div>
+              </span>
+            </div>
+          </div>
+          <br />
+            <button class="btn btn-outline-primary btn-block" [disabled]="!signupForm.valid" (click)="signup()">
+              Sign-up
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
