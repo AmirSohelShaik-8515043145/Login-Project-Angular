@@ -77,7 +77,7 @@ const login = async function (req, res) {
 
         let checkPass = user.password
         let checkUser = await bcrypt.compare(password, checkPass)
-        if (checkUser == false) return res.status(400).send({ status: false, message: "Email or Password is incorrect" })
+        if (checkUser == false) return res.status().send({ status: false, message: "Email or Password is incorrect" })
 
         const token = jwt.sign({
             userId: user._id,
