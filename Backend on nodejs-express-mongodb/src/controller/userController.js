@@ -65,27 +65,27 @@ const login = async function (req, res) {
         const data = req.body
         const { email, password } = data
 
-        if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "Bad Request, No data provided" })
+        if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "Bad Request, No data provided" })
 
         if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(data.email.trim()))) { return res.status(400).send({ status: false, msg: "Please enter a valid Email." }) };
 
-        if (!(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(data.password))) { return res.status(400).send({ status: false, msg: "Email or Password is incorrect" }) }
+        // if (!(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(data.password))) { return res.status(400).send({ status: false, msg: "Email or Password is incorrect" }) }
 
         let user = await userModel.findOne({ email: email })
-        if (!user) { return res.status(400).send({ status: false, msg: "Email or Password is incorrect" }) }
+        if (!user) { return res.status(400).send({ status: false, message: "Email or Password is incorrect" }) }
         console.log(user)
 
         let checkPass = user.password
         let checkUser = await bcrypt.compare(password, checkPass)
-        if (checkUser == false) return res.status(400).send({ status: false, msg: "Email or Password is incorrect" })
+        if (checkUser == false) return res.status(400).send({ status: false, message: "Email or Password is incorrect" })
 
         const token = jwt.sign({
             userId: user._id,
         }, "secret-key", { expiresIn: "120m" })
-        return res.status(200).send({ status: true, msg: "You are successfully logged in" })
+        return res.status(200).send({ status: true, message: "You are successfully logged in" })
     }
     catch (error) {
-        return res.status(500).send({ msg: error.message })
+        return res.status(500).send({ message: error.message })
     }
 }
 

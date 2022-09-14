@@ -1,11 +1,12 @@
+<link rel="stylesheet" href="login.component.css">
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow-lg p-5 mt-5 mb-5">
-        <h1 style="margin:auto; padding-bottom: 15px; color:orange" ><u>Welcome to InCred</u></h1>
+        <h1 style="margin:auto; padding-bottom: 15px; color:orange"><u>Welcome to InCred</u></h1>
         <hr />
         <div [ngClass]="className" role="alert">
-          {{message}} 
+          {{message}}
         </div>
         <form [formGroup]="loginForm">
 
@@ -13,28 +14,23 @@
 
             <!-- //EMAIL -->
             <label style="margin:5px 0px; ">Email</label>
-            <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
+            <input type="email" class="form-control" placeholder="Email" formControlName="email" />
 
             <div *ngIf="loginForm.controls['email']?.touched">
               <span style="color:red; font-size: 12px;">
                 <div *ngIf="loginForm.controls['email']?.errors?.['required']">
                   Email is required
                 </div>
-    
+
                 <div *ngIf="loginForm.controls['email']?.errors?.['pattern']">
                   Please enter a correct email format
                 </div>
-              </span> 
+              </span>
             </div>
-          
+
             <!-- //PASSWORD -->
-            <label style="margin:5px 0px; ">password</label>
-            <input
-              type="password"
-              class="form-control"
-              placeholder="*********"
-              formControlName="password"
-            />
+            <label style="margin:5px 0px; ">Password</label>
+            <input type="password" class="form-control" placeholder="*********" formControlName="password" />
 
             <div *ngIf="loginForm.controls['password']?.touched">
               <span style="color:red; font-size: 12px;">
@@ -53,7 +49,13 @@
           <button class="btn btn-outline-primary btn-block" [disabled]="!loginForm.valid" (click)="login()">
             Login
           </button>
+
+          <div class="forgotPass">
+            <pre> <a routerLink="**" class="text-primary" style="cursor: pointer;">Forgot Password</a> ?</pre>
+          </div>
+
         </form>
+
       </div>
     </div>
   </div>

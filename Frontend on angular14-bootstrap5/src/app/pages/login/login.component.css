@@ -1,0 +1,15 @@
+.forgotPass pre {
+    margin-top: 20px;
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    color: rgb(36, 93, 225);
+}
+
+.forgotPass a{
+    text-decoration: none;
+}
+
+.forgotPass a:hover {
+    text-decoration: underline;
+   
+}
