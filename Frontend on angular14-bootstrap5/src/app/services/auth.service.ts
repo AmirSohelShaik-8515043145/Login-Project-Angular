@@ -16,7 +16,7 @@ export class AuthService {
   login(data:any):Observable<any>{
     return this.http.post('http://localhost:3000/login', data)
   }
-  getuser(data:any):Observable<any>{
-    return this.http.get('http://localhost:3000/getuser', data)
+  getuser():Observable<any>{
+    return this.http.get('http://localhost:3000/getuser')
   }
 }

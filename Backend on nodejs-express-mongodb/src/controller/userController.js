@@ -117,7 +117,7 @@ const getUser = async function(req,res){
 const getUserDetails = async function(req,res){
     try{
         let fetchUserDetails = await userModel.find()
-        res.status(200).send({sttaus:true, message :'User Details',data:fetchUserDetails })
+        res.status(200).send({status:true, message :'User Details',data:fetchUserDetails })
     }
     catch(err){
         res.status(500).send({status:false, message:err.message})
