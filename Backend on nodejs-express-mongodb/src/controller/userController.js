@@ -47,7 +47,8 @@ const createUser = async (req, res) => {
         data.createdAt = moment(new Date).format("Do MMMM,YYYY, h:mm a");
 
         let userCreated = await userModel.create(data);
-        res.status(201).send({ status: true, message: "User created successfully" })
+        
+        res.status(201).send({ status: true, httpcode:200, message: "User created successfully" })
     }
     catch (error) {
         return res.status(500).send({ status: false, message: error.message })
@@ -67,7 +68,7 @@ const login = async function (req, res) {
 
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "Bad Request, No data provided" })
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(data.email.trim()))) { return res.status(400).send({ status: false, msg: "Please enter a valid Email." }) };
+        // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(data.email.trim()))) { return res.status(400).send({ status: false, msg: "Please enter a valid Email." }) };
 
         // if (!(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/.test(data.password))) { return res.status(400).send({ status: false, msg: "Email or Password is incorrect" }) }
 
@@ -77,7 +78,7 @@ const login = async function (req, res) {
 
         let checkPass = user.password
         let checkUser = await bcrypt.compare(password, checkPass)
-        if (checkUser == false) return res.status().send({ status: false, message: "Email or Password is incorrect" })
+        if (checkUser == false) return res.status(400).send({ status: false, message: "Email or Password is incorrect" })
 
         const token = jwt.sign({
             userId: user._id,
@@ -91,7 +92,43 @@ const login = async function (req, res) {
 
 
 
+const getUser = async function(req,res){
+    try{
+        let Email = req.params.email
+
+        //authentication
+        // if(req.userId != paramsId){
+        //     return res.status(400).send({status:false, mesaage:'Invalid user'})
+        // }
+
+        let fetchProfileData = await userModel.findOne({email:Email}).select({password:0, createdAt:0,updatedAt:0, })
+
+        if(!fetchProfileData){
+            return res.status(400).send({status:false, message:'User not found'})
+        }
+
+        res.status(200).send({status:true, message: 'User profile details' , data: fetchProfileData})
+    }
+    catch(err){
+        res.status(500).send({status:false, Error:err.message} )
+    }
+}
+
+const getUserDetails = async function(req,res){
+    try{
+        let fetchUserDetails = await userModel.find()
+        res.status(200).send({sttaus:true, message :'User Details',data:fetchUserDetails })
+    }
+    catch(err){
+        res.status(500).send({status:false, message:err.message})
+    }
+}
+
+
+
 module.exports = {
     createUser,
-    login
+    login,
+    getUser,
+    getUserDetails
 }

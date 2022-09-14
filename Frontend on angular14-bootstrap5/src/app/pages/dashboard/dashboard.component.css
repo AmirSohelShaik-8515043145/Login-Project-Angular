@@ -1,0 +1,15 @@
+*{
+    margin-top: 20px;
+    background-color: rgb(192, 197, 196);
+    font-size: 25px;
+}
+
+button{
+    border: 2px solid blue;
+    margin-bottom: 20px;
+}
+
+table{
+    width: 97%;
+    margin: 20px;
+}

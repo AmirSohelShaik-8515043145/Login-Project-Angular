@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-register',
@@ -23,9 +24,18 @@ export class RegisterComponent implements OnInit {
       'age': ['', Validators.compose([Validators.required, Validators.pattern(/(^\d{1}$)|(^\d{2}$)/)])]
     })
   }
-  
+
   ngOnInit(): void {
   }
+
+  opensweetalert() {
+    Swal.fire(
+      'Success',
+      'User Created Succesfully',
+      'success'
+    )
+  }
+
 
   signup() {
     this.isProcess = true;
@@ -35,14 +45,15 @@ export class RegisterComponent implements OnInit {
     this.auth.signup(data).subscribe(res => {
       if (res.status) {
         this.isProcess = false;
-        this.message = res.message;
         this.className = 'alert alert-success';
-        // this.signupForm.reset()
+        this.opensweetalert()
+        this.signupForm.reset()
       }
       else {
         this.isProcess = false;
         this.message = res.message;
         this.className = 'alert alert-danger';
+        this.opensweetalert()
         setTimeout(() => {
           this.message = "";
           this.className = "d-none"
@@ -60,4 +71,6 @@ export class RegisterComponent implements OnInit {
       }, 4000)
     })
   }
+
+
 }

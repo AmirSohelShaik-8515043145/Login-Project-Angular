@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -22,17 +24,28 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  opensweetalert() {
+    Swal.fire(
+      'Success',
+      'You are Succesfully Logged in ',
+      'success'
+    )
+  }
+
   login() {
     this.isProcess = true;
     let data = this.loginForm.value;
     console.log(data)
+    console.log(window.location.href)
     delete data['confirm']
     this.auth.login(data).subscribe(res => {
       if (res.status) {
         this.isProcess = false;
-        this.message = res.message;
         this.className = 'alert alert-success';
-        // this.loginForm.reset()
+        this.opensweetalert()
+        // window.location.replace()
+        this.loginForm.reset()
       }
       else {
         this.isProcess = false;
@@ -47,7 +60,7 @@ export class LoginComponent implements OnInit {
       this.isProcess = false;
       this.message = "Server Error !!";
       this.className = 'alert alert-danger'
-      // this.message = err.error.message
+      this.message = err.error.message
       setTimeout(() => {
         this.message = "";
         this.className = "d-none"
