@@ -30,26 +30,29 @@ export class RegisterComponent implements OnInit {
   signup() {
     this.isProcess = true;
     let data = this.signupForm.value;
-    let { username, password } = data
-    data.username = username.trim()
-    data.password = password.trim()
+    console.log(data)
     delete data['confirm']
     this.auth.signup(data).subscribe(res => {
-      if (res.success) {
+      if (res.status) {
         this.isProcess = false;
-        this.message = "Account has been created :)";
+        this.message = res.message;
         this.className = 'alert alert-success';
+        // this.signupForm.reset()
       }
       else {
         this.isProcess = false;
         this.message = res.message;
         this.className = 'alert alert-danger';
+        setTimeout(() => {
+          this.message = "";
+          this.className = "d-none"
+        }, 4000);
+        alert("Error")
       }
     }, err => {
       this.isProcess = false;
       this.message = "Server Error !!";
-      this.className = 'alert alert-success'
-      console.log(err)
+      this.className = 'alert alert-danger'
       this.message = err.error.message
       setTimeout(() => {
         this.message = "";

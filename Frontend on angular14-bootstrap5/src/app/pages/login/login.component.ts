@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         this.isProcess = false;
         this.message = res.message;
         this.className = 'alert alert-success';
-        this.loginForm.reset()
+        // this.loginForm.reset()
       }
       else {
         this.isProcess = false;
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       this.isProcess = false;
       this.message = "Server Error !!";
       this.className = 'alert alert-danger'
-      this.message = err.error.message
+      // this.message = err.error.message
       setTimeout(() => {
         this.message = "";
         this.className = "d-none"
