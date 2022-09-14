@@ -2,25 +2,57 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow-lg p-5 mt-5 mb-5">
-        <h1>welcome back </h1>
+        <h1 style="margin:auto; padding-bottom: 15px; color:orange" ><u>Welcome to InCred</u></h1>
         <hr />
-        <div class="alert alert-primary" role="alert">
-          login successful <a href="/"> forget password ?</a>
+        <div [ngClass]="className" role="alert">
+          {{message}} 
         </div>
-        <form [formGroup]="loginform">
+        <form [formGroup]="loginForm">
+
           <div class="form-group">
-            <label for="">Email</label>
+
+            <!-- //EMAIL -->
+            <label style="margin:5px 0px; ">Email</label>
             <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
-            <label for="">password</label>
+
+            <div *ngIf="loginForm.controls['email']?.touched">
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="loginForm.controls['email']?.errors?.['required']">
+                  Email is required
+                </div>
+    
+                <div *ngIf="loginForm.controls['email']?.errors?.['pattern']">
+                  Please enter a correct email format
+                </div>
+              </span> 
+            </div>
+          
+            <!-- //PASSWORD -->
+            <label style="margin:5px 0px; ">password</label>
             <input
               type="password"
               class="form-control"
               placeholder="*********"
               formControlName="password"
             />
+
+            <div *ngIf="loginForm.controls['password']?.touched">
+              <span style="color:red; font-size: 12px;">
+                <div *ngIf="loginForm.controls['password']?.errors?.['required']">
+                  Password is required
+                </div>
+
+                <div *ngIf="loginForm.controls['password']?.errors?.['pattern']">
+                  Password cannot be a empty value
+                </div>
+              </span>
+            </div>
           </div>
+
           <br />
-          <button class="btn btn-outline-primary btn-block" (click)="login()">login</button>
+          <button class="btn btn-outline-primary btn-block" [disabled]="!loginForm.valid" (click)="login()">
+            Login
+          </button>
         </form>
       </div>
     </div>

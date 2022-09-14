@@ -3,8 +3,8 @@ const { createUser, login,} = require("../controller/userController")
 const router = express.Router()
 
 
-router.post('/register', createUser)                      // Sign up API endpoint
-router.post('/login', login)                           // Sign in API endpoint
+router.post('/register', createUser)            
+router.post('/login', login)                      
 
 
 
