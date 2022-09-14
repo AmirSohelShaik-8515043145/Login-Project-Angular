@@ -14,7 +14,7 @@
         <td>{{i.age}}</td>
         <td>{{i.email}}</td>
         <td>{{i.phone}}</td>
-        <button type="button" class="btn btn-primary btn-sm">User Info</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="getprofile(i.email)">User Info</button>
       </tr>
     </tbody>
   </table>

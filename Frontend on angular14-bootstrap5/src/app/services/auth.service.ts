@@ -19,4 +19,7 @@ export class AuthService {
   getuser():Observable<any>{
     return this.http.get('http://localhost:3000/getuser')
   }
+  getprofile(email:any ):Observable<any>{
+    return this.http.get('http://localhost:3000/getuser/' + email)
+  }
 }
