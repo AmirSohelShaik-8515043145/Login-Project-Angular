@@ -120,7 +120,7 @@ const getUserDetails = async function(req,res){
         let fetchProfileData = await userModel.find()
         let i =0,j=fetchProfileData.length-1;
         while(i<j){
-            let temp = fetchProfileData[i]
+            let temp = fetchProfileData[i] 
             fetchProfileData[i] = fetchProfileData[j]
             fetchProfileData[j] = temp
             i++;

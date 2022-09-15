@@ -11,6 +11,7 @@
 button{
     border: 2px solid blue;
     margin-bottom: 20px;
+    margin-right: 0px;
 }
 
 table{
@@ -18,7 +19,37 @@ table{
     margin: 20px;
 }
 
-.paginateRow{
+.paginateDiv{
     width: 97%;
     margin: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.paginateRow{
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+.jumpPageDiv{
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.jumpPageButton{
+    grid-column-start: 2;
+    grid-column-end: 4;
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+
+
+.table tbody tr:hover{
+    background-color: rgb(103, 105, 110);
+    color: rgb(255, 255, 255);
+}
+.table tbody tr td{
+    padding-top:30px;
 }

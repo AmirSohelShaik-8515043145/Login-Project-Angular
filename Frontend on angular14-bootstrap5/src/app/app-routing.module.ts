@@ -8,6 +8,7 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
   {path:'login/userdetails',component:DashboardComponent},
+  // {path:'login/userdetails/:pageNumber',component:DashboardComponent},
   {path:'login/userdetails/:email',component:DashboardComponent},
   {path:'**',component:LoginComponent}
 ];

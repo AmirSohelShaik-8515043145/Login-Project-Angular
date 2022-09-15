@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  signup(data:any):Observable<any>{
+  signup(data: any): Observable<any> {
     return this.http.post('http://localhost:3000/register', data)
   }
 
-  login(data:any):Observable<any>{
+  login(data: any): Observable<any> {
     return this.http.post('http://localhost:3000/login', data)
   }
-  getuser():Observable<any>{
+  getuser(): Observable<any> {
     return this.http.get('http://localhost:3000/getuser')
   }
-  getprofile(email:any ):Observable<any>{
+  getprofile(email: any): Observable<any> {
     return this.http.get('http://localhost:3000/getuser/' + email)
+  }
+  jumpPage(pageNumber: any): Observable<any> {
+    return this.http.get("http://localhost:3000/getuser/"+pageNumber)
   }
 }

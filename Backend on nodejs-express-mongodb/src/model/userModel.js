@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        unique:true
+        // unique:true
     },
     age:{
         type: Number,
@@ -13,13 +13,13 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true
     },
     phone: {
         type: Number,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true
     },
     password: {
@@ -35,4 +35,4 @@ const userSchema = new mongoose.Schema({
     }
 }, { versionKey: false })
 
-module.exports = mongoose.model("incred", userSchema)
+module.exports = mongoose.model("loginApp", userSchema)
