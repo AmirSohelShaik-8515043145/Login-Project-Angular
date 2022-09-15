@@ -74,7 +74,6 @@ const login = async function (req, res) {
 
         let user = await userModel.findOne({ email: email })
         if (!user) { return res.status(400).send({ status: false, message: "Email or Password is incorrect" }) }
-        console.log(user)
 
         let checkPass = user.password
         let checkUser = await bcrypt.compare(password, checkPass)
@@ -101,11 +100,13 @@ const getUser = async function(req,res){
         //     return res.status(400).send({status:false, mesaage:'Invalid user'})
         // }
 
-        let fetchProfileData = await userModel.findOne({email:Email}).select({password:0, createdAt:0,updatedAt:0, })
+        let fetchProfileData = await userModel.findOne({email:Email})
 
         if(!fetchProfileData){
             return res.status(400).send({status:false, message:'User not found'})
         }
+
+        
 
         res.status(200).send({status:true, message: 'User profile details' , data: fetchProfileData})
     }
@@ -116,8 +117,17 @@ const getUser = async function(req,res){
 
 const getUserDetails = async function(req,res){
     try{
-        let fetchUserDetails = await userModel.find()
-        res.status(200).send({status:true, message :'User Details',data:fetchUserDetails })
+        let fetchProfileData = await userModel.find()
+        let i =0,j=fetchProfileData.length-1;
+        while(i<j){
+            let temp = fetchProfileData[i]
+            fetchProfileData[i] = fetchProfileData[j]
+            fetchProfileData[j] = temp
+            i++;
+            j--;
+        }
+        
+        res.status(200).send({status:true, message :'User Details',data:fetchProfileData })
     }
     catch(err){
         res.status(500).send({status:false, message:err.message})

@@ -33,7 +33,9 @@ export class RegisterComponent implements OnInit {
       'Success',
       'User Created Succesfully',
       'success'
-    )
+    ).then(()=>{
+      window.location.replace('/login')
+    })
   }
 
 
@@ -45,9 +47,7 @@ export class RegisterComponent implements OnInit {
     this.auth.signup(data).subscribe(res => {
       if (res.status) {
         this.isProcess = false;
-        this.className = 'alert alert-success';
         this.opensweetalert()
-        this.signupForm.reset()
       }
       else {
         this.isProcess = false;

@@ -3,6 +3,10 @@
     background-color: rgb(192, 197, 196);
     font-size: 25px;
 }
+#navbar{
+    width: 97%;
+    margin: 20px;
+}
 
 button{
     border: 2px solid blue;
@@ -10,6 +14,11 @@ button{
 }
 
 table{
+    width: 97%;
+    margin: 20px;
+}
+
+.paginateRow{
     width: 97%;
     margin: 20px;
 }

@@ -1,3 +1,11 @@
+<nav id="navbar" class="navbar navbar-dark bg-info">
+    <h1 style="background:transparent;font-size:50px;margin :auto">InCred's People</h1>
+  </nav>
+
+
+
+
+
 <table class="table">
     <thead>
       <tr style="border-bottom:2px solid black;">
@@ -8,7 +16,7 @@
       </tr>
     </thead>
     <tbody >
-      <tr *ngFor="let i of message">
+      <tr *ngFor="let i of usersArray | paginate:{itemsPerPage:5, currentPage:page}">
         <!-- <th scope="row">1</th> -->
         <td>{{i.username}}</td>
         <td>{{i.age}}</td>
@@ -18,3 +26,6 @@
       </tr>
     </tbody>
   </table>
+  <div class="paginateRow">
+    <pagination-controls  (pageChange)="page=$event" ></pagination-controls>
+  </div>

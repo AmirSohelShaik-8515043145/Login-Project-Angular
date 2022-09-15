@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -15,22 +16,23 @@ import Swal from 'sweetalert2';
 
 export class DashboardComponent implements OnInit {
   data!: any;
-  message: any ;
-  userInfo : any
-  className = 'd-none'
+  usersArray: any ;
+  userInfo : any;
+  totalRecords:any;
+  page:any=1;
   isProcess: boolean = false;
+
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
     this.getuser()
   }
 
-  opensweetalert(x:any) {
+  opensweetalert(user:any) {
     Swal.fire(
-      x.username,
-     `Email:${x.email} ,Phone:${x.phone}`,
+      user.username,
+     `Email : ${user.email} , Phone : ${user.phone} , Age:${user.age}`,
       "success",
-      
     )
   }
 
@@ -40,8 +42,9 @@ export class DashboardComponent implements OnInit {
     this.auth.getuser().subscribe(res => {
       if (res.status) {
         this.isProcess = false;
-        this.message = res.data;
-        console.log(this.message)
+        this.usersArray = res.data;
+        this.totalRecords = this.usersArray.length
+        console.log(this.totalRecords)
       }
     })
   }

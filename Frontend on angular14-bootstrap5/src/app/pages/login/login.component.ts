@@ -30,7 +30,9 @@ export class LoginComponent implements OnInit {
       'Success',
       'You are Succesfully Logged in ',
       'success'
-    )
+    ).then(()=>{
+      window.location.replace('/login/userdetails')
+    })
   }
 
   login() {
@@ -42,10 +44,9 @@ export class LoginComponent implements OnInit {
     this.auth.login(data).subscribe(res => {
       if (res.status) {
         this.isProcess = false;
-        this.className = 'alert alert-success';
         this.opensweetalert()
-        // window.location.replace()
-        this.loginForm.reset()
+        
+        
       }
       else {
         this.isProcess = false;
