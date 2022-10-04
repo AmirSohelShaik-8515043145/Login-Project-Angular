@@ -32,8 +32,6 @@ export class EmiCalculatorComponent implements OnInit {
     let interest = data.finalRoI/12/100;
     let tenure = data.finalTenure;
 
-    
-
     this.emi = loanAmount * interest * (Math.pow((1+interest),tenure)/(Math.pow((1+interest),tenure)-1))
     if(this.emi%1 != 0){
       this.emi = Math.floor(this.emi)
