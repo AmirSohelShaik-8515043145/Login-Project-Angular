@@ -1,0 +1,115 @@
+<div class="main">
+    <div class="row g-2 align-items-center">
+
+
+
+        <h2>Top-up + Combined Loan Details</h2>
+
+        <form [formGroup]="emiForm">
+
+            <div class="form-group">
+
+
+
+                <div class="grid">
+                    <div>
+                        <label style="margin:5px 0px;">Loan Amount (₹)</label>
+                    </div>
+                    <div style="grid-column-start:2;grid-column-end:4">
+                        <input type="number" class="form-control" formControlName="totalLoanAmount" max="5000000" min="0" />
+
+                        <div *ngIf="emiForm.controls['totalLoanAmount']?.touched">
+                            <span style="color:red; font-size: 12px;">
+                                <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['required']">
+                                    Final Top-Up is required
+                                </div>
+                                <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['max']">
+                                    Maximum Top-Up Should be 5000000
+                                </div>
+                                <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['min']">
+                                    Minimum Top-Up Should be 0
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="grid">
+                    <div>
+                        <label style="margin:5px 0px;">Tenure (month)</label>
+                    </div>
+                    <div style="grid-column-start:2;grid-column-end:4">
+                        <input type="number" class="form-control" formControlName="finalTenure" max="60" min="0" />
+
+                        <div *ngIf="emiForm.controls['finalTenure']?.touched">
+                            <span style="color:red; font-size: 12px;">
+                                <div *ngIf="emiForm.controls['finalTenure']?.errors?.['required']">
+                                    Final Tenure is required
+                                </div>
+                                <div *ngIf="emiForm.controls['finalTenure']?.errors?.['pattern']">
+                                    Input cannot be decimal
+                                </div>
+                                <div *ngIf="emiForm.controls['finalTenure']?.errors?.['max']">
+                                    Maximum Month Should be 5
+                                </div>
+                                <div *ngIf="emiForm.controls['finalTenure']?.errors?.['min']">
+                                    Minimum Month Should be 0
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="grid">
+                    <div>
+                        <label style="margin:5px 0px;">Rate Of Interest (%)</label>
+                    </div>
+                    <div style="grid-column-start:2;grid-column-end:4">
+                        <input type="number" class="form-control" formControlName="finalRoI" max="21" min="0" />
+
+                        <div *ngIf="emiForm.controls['finalRoI']?.touched">
+                            <span style="color:red; font-size: 12px;">
+                                <div *ngIf="emiForm.controls['finalRoI']?.errors?.['required']">
+                                    Final ROI is required
+                                </div>
+                                <div *ngIf="emiForm.controls['finalRoI']?.errors?.['max']">
+                                    Maximum Rate of Interest Should be 21%
+                                </div>
+                                <div *ngIf="emiForm.controls['finalRoI']?.errors?.['min']">
+                                    Minimum Rate of Interest Should be 0
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+    <div class="button">
+        <button type="button" class="btn btn-outline-primary" style="font-size:25px ;" [disabled]="!emiForm.valid"
+            (click)="emiCalculator()">Calculate Emi</button>
+    </div>
+
+    <div *ngIf="flag == true">
+        <div class="row g-2 align-items-center">
+            <h3>Your Monthly EMI will be ₹{{emi}}</h3>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="lastDiv">
+    <button type="button" class="btn btn-outline-secondary" style="width:100%;font-size:25px;margin-bottom: 20px;">Lock
+        Offer</button>
+    <button type="button" class="btn btn-outline-secondary" style="width:100%;font-size:25px;">Update Details</button>
+</div>

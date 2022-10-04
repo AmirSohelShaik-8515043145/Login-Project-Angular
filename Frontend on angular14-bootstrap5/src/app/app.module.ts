@@ -11,6 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { NgxPaginationModule } from 'ngx-pagination';
+import { EmailDashboardComponent } from './pages/email-dashboard/email-dashboard.component';
+import { EmiComponent } from './pages/emi/emi.component';
+import { EmiCalculatorComponent } from './pages/emi/emi-calculator/emi-calculator.component';
 
 
 @NgModule({
@@ -19,7 +22,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    EmailDashboardComponent,
+    EmiComponent,
+    EmiCalculatorComponent,
   ],
   imports: [
     BrowserModule,

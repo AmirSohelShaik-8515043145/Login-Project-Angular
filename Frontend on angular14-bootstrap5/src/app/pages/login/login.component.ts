@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       'You are Succesfully Logged in ',
       'success'
     ).then(()=>{
-      window.location.replace('/login/userdetails')
+      window.location.replace('/email-dashboard')
     })
   }
 
@@ -39,14 +39,12 @@ export class LoginComponent implements OnInit {
     this.isProcess = true;
     let data = this.loginForm.value;
     console.log(data)
-    console.log(window.location.href)
+    // console.log(window.location.href)
     delete data['confirm']
     this.auth.login(data).subscribe(res => {
       if (res.status) {
         this.isProcess = false;
         this.opensweetalert()
-        
-        
       }
       else {
         this.isProcess = false;

@@ -16,13 +16,20 @@ export class AuthService {
   login(data: any): Observable<any> {
     return this.http.post('http://localhost:3000/login', data)
   }
+
   getuser(): Observable<any> {
     return this.http.get('http://localhost:3000/getuser')
   }
+
   getprofile(email: any): Observable<any> {
     return this.http.get('http://localhost:3000/getuser/' + email)
   }
+  
   jumpPage(pageNumber: any): Observable<any> {
     return this.http.get("http://localhost:3000/getuser/"+pageNumber)
+  }
+
+  sendEmail(data: any): Observable<any> {
+    return this.http.post('localhost:3000/sendEmail', data)
   }
 }
