@@ -30,6 +30,10 @@ export class AuthService {
   }
 
   sendEmail(data: any): Observable<any> {
-    return this.http.post('localhost:3000/sendEmail', data)
+    return this.http.post('http://localhost:3000/sendEmail', data)
+  }
+
+  userLaonDeatils():Observable<any>{
+    return this.http.get('https://api.publicapis.org/entries')
   }
 }
