@@ -9,127 +9,141 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class EmiCalculatorComponent implements OnInit {
   emiForm!: FormGroup;
-  formData: any = this.getUserDetails()
-  array: any = this.formData.tenure;
-  foreClosure: number = this.formData.foreClosure;
-  roi: number = this.formData.roi;
-  dueDay: number = this.formData.dueDay;
+  formData: any;
+  tenure: any;
+  maxTotalLoanAmount: any;
+  foreClosure: any;
+  roi: any;
+  dueDay: any;
   topUpInHand: any;
-  emi: any
+  emi: any;
+  minTenure: any;
+  maxTenure: any;
+  isDataLoaded: boolean = false
 
 
 
   constructor(private fb: FormBuilder, private auth: AuthService) {
-
     this.emiForm = this.fb.group({
       'topUp': ['', Validators.required],
       'totalLoanAmount': ['', Validators.required],
       'tenure': ['', Validators.required],
-      'roi': [this.roi, Validators.required],
-      'foreClosure': [this.foreClosure, Validators.required],
-      'dueDay': [this.dueDay, Validators.required],
+      'roi': ['', Validators.required],
+      'foreClosure': ['', Validators.required],
+      'dueDay': ['', Validators.required],
       'pf': [2],
       'pfRupee': [''],
       'gst': [''],
       'totalPf': ['']
     })
-
-
-
   }
 
-  ngOnInit(): void { }
+  ngOnInit() {
+    this.getUserDetails()
+  }
 
 
 
   update(type: any) {
-    let topUp, totalLoanAmount;
-    if (type == "topUp") {
+    let topUp, totalLoanAmount, tenure;
+    if (type == "topUp" || type == 'tenure') {
       topUp = this.emiForm.value.topUp;
-      totalLoanAmount = topUp + this.emiForm.value.foreClosure
+      totalLoanAmount = topUp + this.emiForm.value.foreClosure;
     }
-    else if (type == 'totalLoanAmount') {
+    else if (type == 'totalLoanAmount' || type == 'tenure') {
       totalLoanAmount = this.emiForm.value.totalLoanAmount
       topUp = totalLoanAmount - this.emiForm.value.foreClosure
     }
-    let pfRupee = Math.floor((totalLoanAmount * this.emiForm.value.pf) / 100 + .99)
-    let gst = pfRupee * 18 / 100;
-    let totalPf = pfRupee + gst;
 
-    this.topUpInHand = (topUp - totalPf)
+    tenure = (this.emiForm.value.tenure || this.tenure[this.tenure.length - 1])
 
-    this.emiForm.patchValue({
-      topUp: topUp,
-      totalLoanAmount: totalLoanAmount,
-      pfRupee: pfRupee,
-      gst: gst,
-      totalPf: totalPf
-    })
+    if (topUp && totalLoanAmount) {
+      let pfRupee = Math.ceil((totalLoanAmount * this.emiForm.value.pf) / 100)
+      let gst = Math.ceil(pfRupee * 18 / 100);
+      let totalPf = pfRupee + gst;
 
+      this.topUpInHand = Math.ceil(topUp - totalPf)
 
+      this.emiForm.patchValue({
+        topUp: topUp,
+        totalLoanAmount: totalLoanAmount,
+        pfRupee: pfRupee,
+        gst: gst,
+        totalPf: totalPf,
+        tenure: tenure
+      })
 
-    //--------------------------------------------
-    let data = this.emiForm.value;
-    let roi = data.roi / 100;
-    let tenure = parseInt(data.tenure) / 12;
+      //--------------------------------------------
+      let data = this.emiForm.value;
 
-    console.log(totalLoanAmount, roi, tenure)
-    this.emi = Math.ceil((totalLoanAmount * roi / 12) / (1 - Math.pow(1 + roi / 12, -tenure)))
-    console.log(this.emi)
+      totalLoanAmount = data.totalLoanAmount;
+      let roi = this.emiForm.value.roi / (12 * 100)
+      tenure = parseInt(data.tenure);
 
-    this.emi = Math.ceil(this.emi)
-    //--------------------------------------------
+      this.emi = Math.ceil((totalLoanAmount) * (roi / (1 - Math.pow(1 + roi, - tenure))))
+      //--------------------------------------------
 
+    }
   }
 
-  emiCalculator() {
-    let data = this.emiForm.value;
-    console.log(data)
 
+  loadDataInFrontend() {
+    this.tenure = this.formData.tenure;
+    this.maxTotalLoanAmount = this.formData.maxTotalLoanAmount;
+    this.foreClosure = this.formData.foreClosure;
+    this.roi = this.formData.roi;
+    this.maxTenure = this.formData.maxTenure;
+    this.minTenure = this.formData.minTenure
+    this.isDataLoaded = true
 
-    let totalLoanAmount = data.totalLoanAmount;
-    let roi = data.roi / 100;
-    let tenure = parseInt(data.tenure) / 12;
-
-    console.log(totalLoanAmount, roi, tenure)
-    this.emi = Math.ceil((totalLoanAmount * roi / 12) / (1 - Math.pow(1 + roi / 12, -tenure)))
-    console.log(this.emi)
-
-    this.emi = Math.ceil(this.emi)
+    this.emiForm.patchValue({
+      roi:this.roi,
+      foreClosure :this.foreClosure
+    })
 
   }
 
 
 
   getUserDetails() {
-    let data
-    let foreClosure = 12760;
-    let roi = 18;
-    let dueDay = 5;
-    let tenure = [12, 18, 24, 30, 36, 42, 54, 60]
-
-
-    let obj = {
-      foreClosure: foreClosure,
-      roi: roi,
-      dueDay: dueDay,
-      tenure: tenure
-    }
-
     this.auth.userLaonDeatils().subscribe(res => {
       console.log('get api hitting')
-      if (res.status) {
-        data = res.data
-        return data;
-      }
-    })
 
-    return obj
+      let foreClosure = 12760;
+      let roi = 18;
+      let maxTotalLoanAmount = 600000
+      let maxTenure = 60;
+      let maxFoir = (60 * 50000) / 100;
+      let exIncredObgl = 500//EMI by CM-InCred EMI
+      let maxEmi = maxFoir - exIncredObgl;
+      let minTenure = Math.ceil((Math.log(maxEmi) - Math.log(maxEmi - (maxTotalLoanAmount * (roi / 1200)))) / Math.log(1 + roi / 1200))
+      let arr = [];
+      for (let i = minTenure; i <= maxTenure; i++) {
+        if (i % 6 == 0) {
+          arr.push(i)
+        }
+      }
+
+
+      let obj = {
+        foreClosure: foreClosure,
+        roi: roi,
+        tenure: arr,
+        maxTotalLoanAmount: maxTotalLoanAmount,
+        maxFoir: maxFoir,
+        maxTenure: maxTenure,
+        maxEmi: maxEmi,
+        minTenure: minTenure
+      }
+      this.formData = obj
+      this.loadDataInFrontend()
+      return;
+    })
   }
 
 
 
-
-
-
+  updateUserDetails(){
+    console.log('Update Api')
+  }
 }

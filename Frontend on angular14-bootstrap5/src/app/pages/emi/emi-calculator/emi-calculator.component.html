@@ -1,283 +1,284 @@
-<div class="main">
-    <div class="topDiv">
-        <h2>Top-up + Combined Loan Details</h2>
-        <div class="row g-2 align-items-center" style="height:75%">
-
-            <form [formGroup]="emiForm" style="height:87%;width:100%">
-                <div class="form-group" id="firstForm">
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:5px 0px;">Top-Up(₹)</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4;">
-                            <input id="topUp" type="number" class="form-control" formControlName="topUp" max=5000000
-                                (blur)="update('topUp')" />
-
-                            <div *ngIf="emiForm.controls['topUp']?.touched">
-                                <span style="color:red; font-size: 12px;">
-                                    <div *ngIf="(emiForm.controls['topUp'])?.errors?.['required']">
-                                        Final Top-Up is required
-                                    </div>
-
-                                    <div *ngIf="emiForm.controls['topUp']?.errors?.['max']">
-                                        Maximum Top-Up Should be 5000000
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:0px;font-size: 17px;">Total Loan Amount(₹)</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4">
-                            <input type="number" class="form-control" formControlName="totalLoanAmount" max="5000000"
-                                (blur)="update('totalLoanAmount')" />
-
-                            <div *ngIf="emiForm.controls['totalLoanAmount']?.touched">
-                                <span style="color:red; font-size: 12px;">
-                                    <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['required']">
-                                        Total Loan Amount is required
-                                    </div>
-                                    <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['max']">
-                                        Maximum Top-Up Should be 5000000
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:5px 0px;">Tenure(month)</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4">
-                            <select formControlName="tenure">
-                                <option value="">Select</option>
-                                <option *ngFor="let ele of array" value={{ele}}>{{ele}}</option>
-                            </select>
-                            <div style="color:rgb(3, 3, 3); font-size: 12px;">
-                                <pre style="font-size: 13px;">Min:3   Max:60</pre>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:5px 0px;">ROI(%)</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4">
-                            <input type="text" class="form-control" formControlName="roi" max={{roi}} min={{roi}}
-                                [readonly]="true" />
-
-                            <div *ngIf="emiForm.controls['roi']?.touched">
-                                <span style="color:red; font-size: 12px;">
-                                    <div *ngIf="emiForm.controls['roi']?.errors?.['required']">
-                                        Final ROI is required
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:5px 0px;">ForeClosure</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4">
-                            <input type="number" class="form-control" formControlName="foreClosure" [readonly]='true' />
-
-                            <!-- <div *ngIf="emiForm.controls['foreClosure']?.touched">
-                                <span style="color:red; font-size: 12px;">
-                                    <div *ngIf="emiForm.controls['foreClosure']?.errors?.['required']">
-                                        ForeClosure is required
-                                    </div>
-                                </span>
-                            </div> -->
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="grid">
-                        <div>
-                            <label style="margin:5px 0px;">Due Day</label>
-                        </div>
-                        <div style="grid-column-start:2;grid-column-end:4;">
-                            <input type="number" class="form-control" formControlName="dueDay" />
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </form>
-
-
-        </div>
-    </div>
-
-    <div class="bottomDiv">
-        <div class="bottomDivPart1">
-            <h2>Processing Fees</h2>
-            <div class="row g-2 align-items-center" style="height:80%">
-
-                <form [formGroup]="emiForm" style="height:87%;width:100%">
-                    <div class="form-group" id="secondForm">
-
-                        <div class="grid">
-                            <div>
-                                <label style="margin:5px 0px;">PF in %</label>
-                            </div>
-                            <div style="grid-column-start:2;grid-column-end:4;">
-                                <input id="pf" type="number" class="form-control" formControlName="pf" max="5"
-                                    min="2" />
-
-                                <div *ngIf="emiForm.controls['pf']?.touched">
-                                    <span style="color:red; font-size: 12px;">
-                                        <div
-                                            *ngIf="(emiForm.controls['pf'] || emiForm.controls['exposure'])?.errors?.['required']">
-                                            Final Top-Up is required
-                                        </div>
-
-                                        <div *ngIf="emiForm.controls['pf']?.errors?.['max']">
-                                            Maximum Top-Up Should be 5%
-                                        </div>
-                                        <div *ngIf="emiForm.controls['pf']?.errors?.['min']">
-                                            Minimum Top-Up Should be 0
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid">
-                            <div>
-                                <label style="margin:5px 0px;">PF in rupees</label>
-                            </div>
-                            <div style="grid-column-start:2;grid-column-end:4;">
-                                <input id="pfRupee" type="number" class="form-control" formControlName="pfRupee" max=""
-                                    min="0" [readonly]="true" />
-
-                                <div *ngIf="emiForm.controls['pfRupee']?.touched">
-                                    <span style="color:red; font-size: 12px;">
-                                        <div
-                                            *ngIf="(emiForm.controls['pfRupee'] || emiForm.controls['exposure'])?.errors?.['required']">
-                                            Final Top-Up is required
-                                        </div>
-
-                                        <div *ngIf="emiForm.controls['pfRupee']?.errors?.['max']">
-                                            Maximum Top-Up Should be 500000
-                                        </div>
-                                        <div *ngIf="emiForm.controls['pfRupee']?.errors?.['min']">
-                                            Minimum Top-Up Should be 0
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="grid">
-                            <div>
-                                <label style="margin:5px 0px;">GST</label>
-                            </div>
-                            <div style="grid-column-start:2;grid-column-end:4;">
-                                <input id="gst" type="number" class="form-control" formControlName="gst" max="5000000"
-                                    min="0" [readonly]="true" />
-
-                                <div *ngIf="emiForm.controls['gst']?.touched">
-                                    <span style="color:red; font-size: 12px;">
-                                        <div *ngIf="(emiForm.controls['gst'])?.errors?.['required']">
-                                            Final Top-Up is required
-                                        </div>
-
-                                        <div *ngIf="emiForm.controls['gst']?.errors?.['max']">
-                                            Maximum Top-Up Should be 500000
-                                        </div>
-                                        <div *ngIf="emiForm.controls['gst']?.errors?.['min']">
-                                            Minimum Top-Up Should be 0
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="grid">
-                            <div>
-                                <label style="margin:5px 0px;">Total PF</label>
-                            </div>
-                            <div style="grid-column-start:2;grid-column-end:4;">
-                                <input id="topUp" type="number" class="form-control" formControlName="totalPf"
-                                    max="5000000" min="0" [readonly]="true" />
-
-                                <div *ngIf="emiForm.controls['totalPf']?.touched">
-                                    <span style="color:red; font-size: 12px;">
-                                        <div
-                                            *ngIf="(emiForm.controls['totalPf'] || emiForm.controls['exposure'])?.errors?.['required']">
-                                            Final Top-Up is required
-                                        </div>
-
-
-                                        <div *ngIf="emiForm.controls['totalPf']?.errors?.['max']">
-                                            Maximum Top-Up Should be 500000
-                                        </div>
-                                        <div *ngIf="emiForm.controls['totalPf']?.errors?.['min']">
-                                            Minimum Top-Up Should be 0
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-
-        <div class="bottomDivPart2">
-            <div class="box">
-                <p style="margin: 0;font-size: 20px;font-weight: bold;">Top-Up in hand</p>
-                <h3>₹ {{topUpInHand}}</h3>
-            </div>
-            <div class="box">
-                <p style="margin: 0;font-size: 20px;font-weight: bold;">Final EMI (per month)</p>
-                <h3>₹ {{emi}}</h3>
-            </div>
-            <div class="box">
-                <p style="margin: 0;font-size: 20px;font-weight: bold;">Flat ROI</p>
-                <h3>₹</h3>
-            </div>
-            <div class="box" style="border: none;display: flex;justify-content: center;">
-                <button type="button" class="btn btn-outline-primary" style="font-size:25px;" [disabled]=""
-                    (click)="emiCalculator()">Calculate Emi</button>
-            </div>
-
-        </div>
+<div *ngIf="isDataLoaded == false">
+    <div class="main" style="display: flex;justify-content:center">
+        <h1 style="height:20%;margin:auto">Emi Calculator is Loading...</h1>
     </div>
 </div>
 
 
-
-<div class="lastDiv">
-    <div>
-        <button type="button" class="btn btn-outline-secondary" style="width:100%;font-size:25px;">LockOffer</button>
+<div *ngIf="isDataLoaded == true">
+    <div class="main">
+        <div class="topDiv">
+            <h2>Top-up + Combined Loan Details</h2>
+            <div class="row g-2 align-items-center" style="height:75%">
+    
+                <form [formGroup]="emiForm" style="height:87%;width:100%">
+                    <div class="form-group" id="firstForm">
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:5px 0px;">Top-Up(₹)</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4;">
+                                <input id="topUp" type="number" class="form-control" formControlName="topUp" max={{maxTotalLoanAmount-foreClosure}} 
+                                    (change)="update('topUp')" />
+    
+                                <div *ngIf="emiForm.controls['topUp']?.touched">
+                                    <span style="color:red; font-size: 12px;">
+                                        <div *ngIf="(emiForm.controls['topUp'])?.errors?.['required']">
+                                            Final Top-Up is required
+                                        </div>
+    
+                                        <div *ngIf="emiForm.controls['topUp']?.errors?.['max']">
+                                            Maximum Top-Up Should be {{maxTotalLoanAmount - foreClosure}}
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+    
+    
+    
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:0px;font-size: 17px;">Total Loan Amount(₹)</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4">
+                                <input type="number" class="form-control" formControlName="totalLoanAmount" max={{maxTotalLoanAmount}}
+                                    (change)="update('totalLoanAmount')" />
+    
+                                <div *ngIf="emiForm.controls['totalLoanAmount']?.touched">
+                                    <span style="color:red; font-size: 12px;">
+                                        <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['required']">
+                                            Total Loan Amount is required
+                                        </div>
+                                        <div *ngIf="emiForm.controls['totalLoanAmount']?.errors?.['max']">
+                                            Maximum Top-Up Should be {{maxTotalLoanAmount}}
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+    
+    
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:5px 0px;">Tenure(month)</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4">
+                                <select formControlName="tenure" (change)="update('tenure')">
+                                    <option value="">Select</option>
+                                    <option *ngFor="let month of tenure" value={{month}}>{{month}}</option>
+                                </select>
+                                <div style="color:rgb(3, 3, 3); font-size: 12px;">
+                                    <pre style="font-size: 13px;"> Min:{{minTenure}}  Max:{{maxTenure}}</pre>
+                                </div>
+                            </div>
+                        </div>
+    
+    
+    
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:5px 0px;">ROI(%)</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4">
+                                <input type="text" class="form-control" formControlName="roi"
+                                    [readonly]="true" />
+    
+                                <div *ngIf="emiForm.controls['roi']?.touched">
+                                    <span style="color:red; font-size: 12px;">
+                                        <div *ngIf="emiForm.controls['roi']?.errors?.['required']">
+                                            Final ROI is required
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+    
+    
+    
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:5px 0px;">ForeClosure</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4">
+                                <input type="number" class="form-control" formControlName="foreClosure" [readonly]='true' />
+    
+                                <!-- <div *ngIf="emiForm.controls['foreClosure']?.touched">
+                                    <span style="color:red; font-size: 12px;">
+                                        <div *ngIf="emiForm.controls['foreClosure']?.errors?.['required']">
+                                            ForeClosure is required
+                                        </div>
+                                    </span>
+                                </div> -->
+                            </div>
+                        </div>
+    
+    
+    
+    
+                        <div class="grid">
+                            <div>
+                                <label style="margin:5px 0px;">Due Day</label>
+                            </div>
+                            <div style="grid-column-start:2;grid-column-end:4;">
+                                <input type="number" class="form-control" formControlName="dueDay" />
+                            </div>
+                        </div>
+    
+    
+    
+                    </div>
+                </form>
+    
+    
+            </div>
+        </div>
+    
+        <div class="bottomDiv">
+            <div class="bottomDivPart1">
+                <h2>Processing Fees</h2>
+                <div class="row g-2 align-items-center" style="height:80%">
+    
+                    <form [formGroup]="emiForm" style="height:100%;width:100%">
+                        <div class="form-group" id="secondForm">
+    
+                            <div class="grid">
+                                <div>
+                                    <label style="margin:5px 0px;">PF in %</label>
+                                </div>
+                                <div style="grid-column-start:2;grid-column-end:4;">
+                                    <input id="pf" type="number" class="form-control" formControlName="pf" (change)="update('tenure')"/>
+    
+                                    <div *ngIf="emiForm.controls['pf']?.touched">
+                                        <span style="color:red; font-size: 12px;">
+                                            <div
+                                                *ngIf="(emiForm.controls['pf'] || emiForm.controls['exposure'])?.errors?.['required']">
+                                                PF is required
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="grid">
+                                <div>
+                                    <label style="margin:5px 0px;">PF in rupees</label>
+                                </div>
+                                <div style="grid-column-start:2;grid-column-end:4;">
+                                    <input id="pfRupee" type="number" class="form-control" formControlName="pfRupee" max=""
+                                        min="0" [readonly]="true" />
+    
+                                    <div *ngIf="emiForm.controls['pfRupee']?.touched">
+                                        <span style="color:red; font-size: 12px;">
+                                            <div
+                                                *ngIf="(emiForm.controls['pfRupee'] || emiForm.controls['exposure'])?.errors?.['required']">
+                                                Final Top-Up is required
+                                            </div>
+    
+                                            <div *ngIf="emiForm.controls['pfRupee']?.errors?.['max']">
+                                                Maximum Top-Up Should be 500000
+                                            </div>
+                                            <div *ngIf="emiForm.controls['pfRupee']?.errors?.['min']">
+                                                Minimum Top-Up Should be 0
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+                            <div class="grid">
+                                <div>
+                                    <label style="margin:5px 0px;">GST</label>
+                                </div>
+                                <div style="grid-column-start:2;grid-column-end:4;">
+                                    <input id="gst" type="number" class="form-control" formControlName="gst" max="5000000"
+                                        min="0" [readonly]="true" />
+    
+                                    <div *ngIf="emiForm.controls['gst']?.touched">
+                                        <span style="color:red; font-size: 12px;">
+                                            <div *ngIf="(emiForm.controls['gst'])?.errors?.['required']">
+                                                Final Top-Up is required
+                                            </div>
+    
+                                            <div *ngIf="emiForm.controls['gst']?.errors?.['max']">
+                                                Maximum Top-Up Should be 500000
+                                            </div>
+                                            <div *ngIf="emiForm.controls['gst']?.errors?.['min']">
+                                                Minimum Top-Up Should be 0
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+    
+                            <div class="grid">
+                                <div>
+                                    <label style="margin:5px 0px;">Total PF</label>
+                                </div>
+                                <div style="grid-column-start:2;grid-column-end:4;">
+                                    <input id="topUp" type="number" class="form-control" formControlName="totalPf"
+                                        max="5000000" min="0" [readonly]="true" />
+    
+                                    <div *ngIf="emiForm.controls['totalPf']?.touched">
+                                        <span style="color:red; font-size: 12px;">
+                                            <div
+                                                *ngIf="(emiForm.controls['totalPf'] || emiForm.controls['exposure'])?.errors?.['required']">
+                                                Final Top-Up is required
+                                            </div>
+    
+    
+                                            <div *ngIf="emiForm.controls['totalPf']?.errors?.['max']">
+                                                Maximum Top-Up Should be 500000
+                                            </div>
+                                            <div *ngIf="emiForm.controls['totalPf']?.errors?.['min']">
+                                                Minimum Top-Up Should be 0
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    
+    
+    
+            <div class="bottomDivPart2">
+                <div class="box">
+                    <p style="margin: 0;font-size: 20px;font-weight: bold;">Top-Up in hand</p>
+                    <h3>₹ {{topUpInHand}}</h3>
+                </div>
+                <div class="box">
+                    <p style="margin: 0;font-size: 20px;font-weight: bold;">Final EMI (per month)</p>
+                    <h3>₹ {{emi}}</h3>
+                </div>
+                <div class="box">
+                    <p style="margin: 0;font-size: 20px;font-weight: bold;">Flat ROI</p>
+                    <h3>₹</h3>
+                </div>
+                <!-- <div class="box" style="border: none;display: flex;justify-content: center;">
+                    <button type="button" class="btn btn-outline-primary" style="font-size:25px;" [disabled]="!emiForm.valid"
+                        (click)="emiCalculator()">Calculate Emi</button>
+                </div> -->
+    
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <div class="lastDiv">
+        <div>
+            <button type="button" class="btn btn-outline-secondary" style="width:100%;font-size:25px;" (click)="updateUserDetails()">LockOffer</button>
+        </div>
     </div>
 </div>

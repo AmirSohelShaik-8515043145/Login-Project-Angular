@@ -1,0 +1,11 @@
+1. flag on NgOnInIt -------->initialize true
+
+2. get api call 
+
+3. api call complete ke baad flag ko false karna hai
+
+4. form value initialize with api response/hardcode data 
+
+5. if flag true then laoding screen
+
+6. your flag false then calculator will be laoding 
