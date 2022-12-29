@@ -6,6 +6,10 @@ const jwt = require("jsonwebtoken")
 const nodemailer = require('nodemailer')
 const XLSX = require('xlsx')
 const axios = require('axios')
+const readXlsxFile = require('read-excel-file/node');
+const request = require('request');
+const fs = require('fs');
+const aws = require("../aws/aws")
 
 
 
@@ -144,53 +148,64 @@ const getUserDetails = async function (req, res) {
 
 
 const sendEmail = async (req, res) => {
-    try{
+    try {
         let body = req.body;
         let { TO, subject, content } = body;
-    
-    
-       
-        // let body = content.split("\n")
-        // let arr = []
-        // for (let ele of body) {
-        //     if (ele != "") {
-        //         arr.push(ele)
-        //     }
-        // }
-        // let text = arr.join("\n")
-        // console.log(text)
-    
-    
-        var details = {
-            TO: TO,
-            SUBJECT: subject,
-            MESSAGE_BODY: content,
-            SIGNATURE: '<br><b>Thanks<br>Incred</b> ',
-            "BCC" : "care@incred.com"
-        };
-    
-    
-        var options = {
-            url: "https://api-qa-pl.nprod.incred.com/v2/partner/email/send",
-           
-            method: 'POST',
-            headers: {
-                'api-key': "f32e01ffae371e13a9f571f4e9db4a8fc84733fac22b1ff53929350fe5b846",
-                'Content-Type': 'application/json'
-            },
-            json: true,
-            data:details,
-        };
-    
-        let result = await axios(options)
-        let data = result.data
-       
-    
-    
-    
-        res.status(200).send(data)
+
+        let files = req.files;
+        if (Object.keys(files).length > 0){
+            const fileRes = await aws.uploadFile(files[0]);
+            data.profileImage = fileRes.Location;
+        }
+        
+
+        let process = true;
+        let mailCounter = 0;
+
+        let successMail = 0;
+        let failedMail = 0;
+        let pendingArray = [];
+
+        function sendEmail(data) {
+            let options = {
+                uri: "https://api-qa-pl.nprod.incred.com/v2/partner/email/send",
+                method: 'POST',
+                headers: {
+                    'api-key': "f32e01ffae371e13a9f571f4e9db4a8fc84733fac22b1ff53929350fe5b846",
+                    'Content-Type': 'application/json'
+                },
+                json: true,
+                form: data
+            };
+
+            request(options, (body) => {
+                console.log(body)
+            })
+        }
+
+
+        readXlsxFile('/home/admin1/Documents/Practice/Login and Send Email/Login-Project-Angular/Backend on nodejs-express-mongodb/src/EDLN PL Oct 2022.xlsx').then((rows) => {
+            rows.forEach(element => {
+
+                if (process && element[0] != 'LOAN_NO' && mailCounter < 2) {
+
+                    let mail = {
+                        TO: TO,
+                        SUBJECT: subject,
+                        MESSAGE_BODY: content,
+                        SIGNATURE: '<br><b>Thanks<br>Incred</b> ',
+                        "BCC": "care@incred.com"
+                    };
+                    sendEmail(mail);
+                }
+                mailCounter++;
+            });
+        });
+
+
+        res.status(200).send("Success")
     }
-    catch(err){
+    catch (err) {
         res.status(500).send({ status: false, message: err.message })
     }
 }
@@ -231,11 +246,91 @@ const sendEmail = async (req, res) => {
 
 
 
+const automatedMailSend = async (req, res) => {
+    try {
+        const reqBody = req.body
+        let process = true;
+        let mailCounter = 0;
+
+        let successMail = 0;
+        let failedMail = 0;
+        let pendingArray = [];
+
+
+        function sendEmail(data) {
+            var options = {
+                uri: "https://api-qa-pl.nprod.incred.com/v2/partner/email/send",
+                method: 'POST',
+                headers: {
+                    'api-key': "f32e01ffae371e13a9f571f4e9db4a8fc84733fac22b1ff53929350fe5b846",
+                    'Content-Type': 'application/json'
+                },
+                json: true,
+                form: data
+            };
+
+            request(options, (body) => {
+                console.log(body)
+                if (!body.status) {
+                    console.log('\nFailed : ', body.message, data.SUBJECT);
+                    failedMail += 1;
+
+                    writeFailRecord(` ` + data.SUBJECT + ' ' + body.message);
+                }
+                else {
+                    console.log('\nSuccessful : ', data.TO);
+                    successMail += 1;
+                }
+
+                console.log('Successfull : ', successMail);
+                console.log('Failed : ', failedMail);
+            });
+        }
+
+        readXlsxFile('/home/admin1/Documents/Practice/Login and Send Email/Login-Project-Angular/Backend on nodejs-express-mongodb/src/EDLN PL Oct 2022.xlsx').then((rows) => {
+            rows.forEach(element => {
+                console.log(element)
+                if (process && element[0] != 'LOAN_NO' && mailCounter < 3) {
+                    let mail = {
+                        // TO: element[4],
+                        // TO: 'shivi.aneja@incred.com,shivangi.tiwari@incred.com,amir.shaik@incred.com',
+                        TO: reqBody.TO,
+                        SUBJECT: reqBody.subject,
+                        MESSAGE_BODY: emailContent(element),
+                        SIGNATURE: '<br><b>Thanks<br>Incred</b> ',
+                        "BCC": "care@incred.com"
+                    };
+                    sendEmail(mail);
+                }
+                mailCounter++;
+            });
+        });
+
+        function writeFailRecord(text) {
+            fs.appendFileSync('/home/admin1/Documents/Practice/Login and Send Email/Login-Project-Angular/Backend on nodejs-express-mongodb/src/record.txt', text);
+        };
+
+        function emailContent(data) {
+            let content = `Sir/Madam,<br />
+        
+            This is a test email`;
+
+            return content;
+
+        }
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 
 module.exports = {
     createUser,
     login,
     getUser,
     getUserDetails,
-    sendEmail
+    sendEmail,
+    automatedMailSend
 }

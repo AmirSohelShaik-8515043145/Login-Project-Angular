@@ -17,6 +17,7 @@ export class EmailDashboardComponent implements OnInit {
   constructor(private fb: FormBuilder, private auth: AuthService) {
     this.emailform = this.fb.group({
       'TO': ['', Validators.compose([Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)])],
+      'uploadFile':[null],
       'subject':[''],
       'content' : ['',Validators.required]
     })
@@ -42,5 +43,9 @@ export class EmailDashboardComponent implements OnInit {
         this.opensweetalert()
       }
     })
+  }
+
+  test(){
+    console.log(this.emailform.value)
   }
 }
